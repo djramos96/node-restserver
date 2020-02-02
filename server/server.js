@@ -1,9 +1,15 @@
 require('./config/config');
 
+// requires
 const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
+mongoose.set('useFindAndModify', false);
+
+// inicializacion express
+const app = express();
+
+const bodyParser = require('body-parser');
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -11,37 +17,25 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.get('/usuario', function(req, res) {
-    res.json('get Usuario')
-});
 
-app.post('/usuario', function(req, res) {
+// Metodos GET POST PUT DELETE
+app.use(require('./routes/usuario'));
 
-    let body = req.body;
+// Conectar base de datos
+mongoose.connect(process.env.URLDB, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true
+    },
+    (err, res) => {
 
-    if (body.nombre === undefined) {
-        res.status(400).json({
-            ok: false,
-            mensaje: 'El nombre es necesario'
-        });
-    } else {
+        if (err) throw err;
 
-        res.json({
-            persona: body
-        });
-    }
-});
+        console.log('Pase de datos ONLINE');
+    });
 
-app.put('/usuario/:id', function(req, res) {
 
-    let id = req.params.id;
-    res.json(id)
-});
-
-app.delete('/usuario', function(req, res) {
-    res.json('delete Usuario')
-});
-
+// Listener del puerto
 app.listen(process.env.PORT, () => {
     console.log(`Escuchando puerto ${process.env.PORT}`);
 })
