@@ -19,7 +19,7 @@ app.use(bodyParser.json())
 
 
 // Metodos GET POST PUT DELETE
-app.use(require('./routes/usuario'));
+app.use(require('./routes/index'));
 
 // Conectar base de datos
 mongoose.connect(process.env.URLDB, {
