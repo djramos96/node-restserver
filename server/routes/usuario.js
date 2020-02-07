@@ -37,7 +37,7 @@ app.get('/usuario', verificaToken, (req, res) => {
             });
 
 
-        })
+        });
 
 
 });
@@ -117,8 +117,8 @@ app.delete('/usuario/:id', [verificaToken, verificaAdminRole], (req, res) => {
         res.json({
             ok: true,
             usuario: usuarioBorrado
-        })
-    })
+        });
+    });
 
 
 });
